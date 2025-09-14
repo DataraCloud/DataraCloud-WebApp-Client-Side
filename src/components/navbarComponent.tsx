@@ -3,6 +3,9 @@ import { useState, useEffect } from "react"
 import { FiHome, FiUser, FiFolder, FiBookOpen, FiMail, FiLogIn, FiUserPlus, FiSun, FiMoon, FiMenu, FiX, FiBarChart2, FiDatabase, FiTrendingUp, FiFileText, FiZap, FiStar } from "react-icons/fi"
 import {cloudinaryConstants} from "../constants/cloudinaryConstants.tsx";
 import {businessConstants} from "../constants/businessConstants.tsx";
+import {useAppDispatch, useAppSelector} from "../redux/hook/hook.tsx";
+import {selectTheme, toggleDarkLightTheme} from "../redux/features/darkLightTheme/darkLightThemeSlice.tsx";
+
 
 
 interface NavItem {
@@ -13,12 +16,20 @@ interface NavItem {
 }
 
 
+
 const NavbarComponent: React.FC = () => {
 
 
-    const [darkMode, setDarkMode] = useState<boolean>(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
     const [scrolled, setScrolled] = useState<boolean>(false)
+
+    const darkMode = useAppSelector(selectTheme);
+    const dispatch = useAppDispatch();
+
+
+    const toggleDarkMode = () => {
+        dispatch(toggleDarkLightTheme())
+    }
 
 
     useEffect(() => {
@@ -54,16 +65,6 @@ const NavbarComponent: React.FC = () => {
         { label: "Sign In", href: "/signin", icon: <FiLogIn /> },
         { label: "Sign Up", href: "/signup", icon: <FiUserPlus /> },
     ]
-
-
-    const toggleDarkMode = (): void => {
-        setDarkMode(!darkMode)
-        if (darkMode) {
-            document.documentElement.classList.remove("dark")
-        } else {
-            document.documentElement.classList.add("dark")
-        }
-    }
 
 
     const toggleMobileMenu = (): void => {
